@@ -1,0 +1,14 @@
+daily_limit: 0
+input_funds:
+  transfer_from: "tenbis"
+  email: ""
+  password: ""
+output_funds:
+  transfer_from: "segev"
+  email: ""
+  password: ""
+browser: "firefox"
+email_notifications:
+  sender_email: ""
+  recipient_email: ""
+  sender_mailbox_password: ""
