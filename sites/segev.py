@@ -1,4 +1,5 @@
 from time import sleep
+from utils import decorators
 
 
 def calculate_load(total_sum):
@@ -14,7 +15,8 @@ def calculate_load(total_sum):
     return return_dict
 
 
-def transfer_to_segev(web_driver_obj, amount_to_transfer, log_file, configurations):
+@decorators.retry()
+def transfer_to_segev(web_driver_obj, amount_to_transfer, logger, configurations):
     # go to segev
     web_driver_obj.navigate_to_url("https://www.tabitorder.com/?site=598c22169debb722006d6d67#/app/order/menus")
     sleep(3)
@@ -35,7 +37,7 @@ def transfer_to_segev(web_driver_obj, amount_to_transfer, log_file, configuratio
 
     web_driver_obj.wait_for("//div[@class='pull-right flip m-near-md pos-rlt text-xl ng-scope dropdown']//a//i")
     user_name = web_driver_obj.get_element_attribute("//div[@class='pull-right flip m-near-md pos-rlt text-xl ng-scope dropdown']//a//i", "xpath", "innerHTML").strip()
-    print(f"logged in to segev as {user_name}", file=log_file)
+    logger.info(f"logged in to segev as {user_name}")
     sleep(3)
 
     # fill payment
@@ -55,20 +57,20 @@ def transfer_to_segev(web_driver_obj, amount_to_transfer, log_file, configuratio
     total_amount = web_driver_obj.get_element_attribute("//span[@class='with-money ng-binding ng-scope']", "xpath", "innerHTML").strip("₪. 0")
 
     # assert that amount to be paid equals remaining funds
-    assert int(total_amount) == int(amount_to_transfer), print(f"Error! total amount {total_amount} not equals remaining funds {amount_to_transfer}", file=log_file)
+    assert int(total_amount) == int(amount_to_transfer), logger.error(f"Error! total amount {total_amount} not equals remaining funds {amount_to_transfer}")
 
     # click proceed to payment
     web_driver_obj.click_on("//button[@class='btn btn-brand btn-lg btn-block']")
     # get final amount again
     final_amount = web_driver_obj.get_element_attribute("//div[@class='m-t-xs font-balder ng-scope']//div[@class='pull-right flip ng-binding']", "xpath", "innerHTML").strip("₪. 0")
-    assert int(total_amount) == int(final_amount), print( f"Error! total amount {total_amount} not equals remaining funds {final_amount}")
+    assert int(total_amount) == int(final_amount), logger.error( f"Error! total amount {total_amount} not equals remaining funds {final_amount}")
 
     # click continue
     web_driver_obj.click_on("//button[@class='btn btn-lg btn-block btn-brand ng-binding']")
 
     # assert again
     paid_amount = web_driver_obj.get_element_attribute("//button[@class='btn btn-brand btn-lg btn-block']/span[2]", "xpath", "innerHTML").strip("₪. 0")
-    assert int(total_amount) == int(paid_amount), print(f"Error! total amount {total_amount} not equals remaining funds {paid_amount}")
+    assert int(total_amount) == int(paid_amount), logger.error(f"Error! total amount {total_amount} not equals remaining funds {paid_amount}")
 
     # pay -------->>>>>> click pay!
     web_driver_obj.click_on("//button[@class='btn btn-brand btn-lg btn-block']")
@@ -76,6 +78,7 @@ def transfer_to_segev(web_driver_obj, amount_to_transfer, log_file, configuratio
 
     web_driver_obj.wait_for("//div[@class='hbox desktop-offer-summary-title']/div[@class='col _value text-highlight text-far ng-binding']")
     total_paid = web_driver_obj.get_element_attribute("//div[@class='hbox desktop-offer-summary-title']/div[@class='col _value text-highlight text-far ng-binding']","xpath", "innerHTML").strip("₪. 0\n")
-    assert int(total_paid) == int(amount_to_transfer), print(f"Error! total amount paid {total_paid} not equals remaining funds {amount_to_transfer}", file=log_file)
+    assert int(total_paid) == int(amount_to_transfer), logger.error(f"Error! total amount paid {total_paid} not equals remaining funds {amount_to_transfer}")
+    logger.info(f"successfully transferred {total_paid} NIS from 10bis to Segev!!!!!!!")
 
-    print(f"successfully transferred {total_paid} NIS from 10bis to Segev!!!!!!!", file=log_file)
+    return True

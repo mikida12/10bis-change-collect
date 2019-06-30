@@ -1,8 +1,10 @@
-from time import sleep
 import re
+from time import sleep
+from utils import decorators
 
 
-def get_balance_from_ten_bis(web_driver_obj, log_file, configurations):
+@decorators.retry()
+def get_balance_from_ten_bis(web_driver_obj, logger, configurations):
     web_driver_obj.navigate_to_url("https://www.10bis.co.il")
     # web_driver_obj.wait_for("//div[@class='styled__HeaderUserLink-sc-1s2hb09-4 bZLUPI'][2]")
     sleep(1)
@@ -18,7 +20,7 @@ def get_balance_from_ten_bis(web_driver_obj, log_file, configurations):
     sleep(5)
     web_driver_obj.wait_for("//div[@class='styled__PrimaryText-sc-1snjgai-3 kjUIiq']")
     welcome_text = web_driver_obj.get_element_attribute("//div[@class='styled__PrimaryText-sc-1snjgai-3 kjUIiq']", "xpath", "innerHTML")
-    print(f"logged in to 10bis as - {welcome_text.split()[1]}", file=log_file)
+    logger.info(f"logged in to 10bis as - {welcome_text.split()[1]}")
 
     # open menu
     web_driver_obj.click_on("//img[@class='styled__MenuButtonImg-sc-1snjgai-7 cucpMo']", "xpath")
@@ -29,6 +31,6 @@ def get_balance_from_ten_bis(web_driver_obj, log_file, configurations):
     web_driver_obj.wait_for('//*[@id="__next"]/div/div[2]/div/div[3]/div[2]/div/div[3]/div/div')
     used_today = web_driver_obj.get_element_attribute('//*[@id="__next"]/div/div[2]/div/div[3]/div[2]/div/div[3]/div/div', "xpath", "innerHTML")
     used_today = int(re.findall(r'\d+', used_today)[0])
-    print(f"used today: {used_today}", file=log_file)
+    logger.info(f"used today: {used_today}")
 
     return used_today
