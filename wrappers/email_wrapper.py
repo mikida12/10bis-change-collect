@@ -5,11 +5,11 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 
-def send_email(configurations):
+def send_email(configurations, transferred_success, amount):
     message = MIMEMultipart()
     message["From"] = configurations.get("email_notifications").get("sender_email")
     message["To"] = configurations.get("email_notifications").get("recipient_email")
-    message["Subject"] = "10Bis funds transfer logs"
+    message["Subject"] = f"Successfully transferred {amount} from 10bis to Segev" if transferred_success else "No balance remaining to transfer from 10bis to segev" if amount <= 0 else "Failed to transfer from 10bis to Segev"
 
     body = "attached logs for 10bis to Segev python script"
     message.attach(MIMEText(body, "plain"))
