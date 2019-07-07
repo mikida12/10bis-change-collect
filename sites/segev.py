@@ -15,7 +15,7 @@ def calculate_load(total_sum):
     return return_dict
 
 
-@decorators.retry()
+# @decorators.retry()
 def transfer_to_segev(web_driver_obj, amount_to_transfer, logger, configurations):
     # go to segev
     web_driver_obj.navigate_to_url("https://www.tabitorder.com/?site=598c22169debb722006d6d67#/app/order/menus")

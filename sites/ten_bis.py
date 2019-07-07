@@ -6,11 +6,11 @@ from utils import decorators
 @decorators.retry()
 def get_balance_from_ten_bis(web_driver_obj, logger, configurations):
     web_driver_obj.navigate_to_url("https://www.10bis.co.il")
-    # web_driver_obj.wait_for("//div[@class='styled__HeaderUserLink-sc-1s2hb09-4 bZLUPI'][2]")
-    sleep(1)
+    sleep(3)
 
+    web_driver_obj.wait_for("//div[@class='styled__HeaderUserLink-sc-1s2hb09-4 bZLUPI'][2]")
     web_driver_obj.click_on("//div[@class='styled__HeaderUserLink-sc-1s2hb09-4 bZLUPI'][2]", "xpath")
-    sleep(1)
+    sleep(2)
 
     # login
     web_driver_obj.type("email", "id", configurations.get("input_funds").get("email"))

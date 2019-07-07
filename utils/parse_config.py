@@ -3,8 +3,8 @@ import logging
 
 
 def set_logger(file_name, level):
-    logging.basicConfig(filename=file_name, level=logging.getLevelName(level),
-                        format='%(asctime)s %(levelname)s %(name)s %(message)s')
+    logging.basicConfig(filename=file_name, filemode="w", level=logging.getLevelName(level),
+                        format='%(asctime)s %(levelname)s %(message)s')
     return logging.getLogger(__name__)
 
 
