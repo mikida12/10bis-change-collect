@@ -16,7 +16,7 @@ if __name__ == "__main__":
     used_today = ten_bis.get_balance_from_ten_bis(web_driver_obj, logger, config)
     transferred_success = False
     remaining_today = 0
-    if used_today:
+    if used_today is not None and used_today is not False:
         remaining_today = daily_limit - used_today
         logger.info(f"remaining funds: {remaining_today}")
         sleep(3)
@@ -28,6 +28,5 @@ if __name__ == "__main__":
 
     web_driver_obj.close_browser()
     logger.info("finished")
-    # logs_file.close()
 
     email_wrapper.send_email(config, transferred_success, remaining_today)

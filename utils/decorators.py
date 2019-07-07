@@ -1,5 +1,6 @@
 from functools import wraps
 from time import sleep
+from . import parse_config
 
 
 def retry(tries=3, delay=5):
@@ -12,8 +13,8 @@ def retry(tries=3, delay=5):
                 try:
                     result = func(*args, **kwargs)
                 except Exception as e:
-                    print(f"error! retrying in {delay} seconds")
-                    # logger.exception(f"error! retrying in {delay} seconds")
+                    logger = parse_config.set_logger(file_name="output.txt", level="INFO")
+                    logger.exception(f"error! retrying in {delay} seconds")
                     sleep(delay)
                     tried += 1
             return result
