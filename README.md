@@ -1,7 +1,7 @@
 # 10bis-change-collect
 Transfer remaining balance from TenBis card to external cards (currently Segev) automatically 
 
-You can use this to transfer funds between 10bis card and Segev card.
+You can use this python project to transfer funds between 10bis card and Segev card (more options comning soon).
 
 
 ## Requirements
