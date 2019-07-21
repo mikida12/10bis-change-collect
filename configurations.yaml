@@ -4,7 +4,7 @@ input_funds:
   email: ""
   password: ""
 output_funds:
-  transfer_from: "segev"
+  transfer_to: "segev"
   email: ""
   password: ""
 browser: "firefox"
