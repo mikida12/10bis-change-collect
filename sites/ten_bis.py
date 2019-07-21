@@ -3,7 +3,7 @@ from time import sleep
 from utils import decorators
 
 
-@decorators.retry()
+# @decorators.retry()
 def get_balance_from_ten_bis(web_driver_obj, logger, configurations):
     web_driver_obj.navigate_to_url("https://www.10bis.co.il")
     sleep(3)
@@ -15,7 +15,7 @@ def get_balance_from_ten_bis(web_driver_obj, logger, configurations):
     # login
     web_driver_obj.type("email", "id", configurations.get("input_funds").get("email"))
     web_driver_obj.type("password", "id", configurations.get("input_funds").get("password"))
-    web_driver_obj.click_on("//button[@type='submit'][@class='styled__LongButton-sc-10wc8na-4 jxczNM']", "xpath")
+    web_driver_obj.click_on("//button[@type='submit']", "xpath")
 
     sleep(5)
     web_driver_obj.wait_for("//div[@class='styled__PrimaryText-sc-1snjgai-3 kjUIiq']")
